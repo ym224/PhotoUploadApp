@@ -8,9 +8,9 @@ import com.google.firebase.database.Query;
 
 public class PhotoFragmentPrivate extends TabsFragment{
 
-        private static final String TAG = "Photo Fragment Private";
-        private static final String PHOTO_FRAGMENT_TAB = "Photo Fragment Private";
-        private String tab;
+    private static final String TAG = "Photo Fragment Private";
+    private static final String PHOTO_FRAGMENT_TAB = "Photo Fragment Private";
+    private String tab;
 
     public PhotoFragmentPrivate(){}
 

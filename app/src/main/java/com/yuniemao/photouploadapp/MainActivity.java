@@ -1,6 +1,5 @@
 package com.yuniemao.photouploadapp;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final TabsFragment photoFragmentPrivate = new PhotoFragmentPrivate();
         final TabsFragment processedPhotoFragment = new PostProcessedPhotoFragment();
 
-
+        // create different tab views depending on user authentication
         if (user != null) {
             viewPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
 
@@ -90,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (bundle != null) {
             searchString = bundle.getString("searchString");
             Log.d(TAG, "search string is " + searchString);
-            photoFragment.setQuery(searchString);
-            processedPhotoFragment.setQuery(searchString);
+            photoFragment.setSearchString(searchString);
+            processedPhotoFragment.setSearchString(searchString);
             // show all button
             findViewById(R.id.show_all).setVisibility(View.VISIBLE);
             findViewById(R.id.show_all).setOnClickListener(this);
@@ -119,10 +118,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showSearchImages(String query){
-        Log.d(TAG, "in show search with query " + query);
+        Log.d(TAG, "in show search with searchString " + query);
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("searchString", query); // pass search query to intent
+        bundle.putString("searchString", query); // pass search searchString to intent
         intent.putExtras(bundle);
         startActivity(intent);
         finish();

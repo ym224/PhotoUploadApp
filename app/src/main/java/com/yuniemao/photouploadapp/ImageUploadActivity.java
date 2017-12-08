@@ -40,7 +40,6 @@ public class ImageUploadActivity extends BaseActivity implements View.OnClickLis
     private String authorId;
     private String description;
     private boolean isPrivate;
-    private String fileName;
 
     private static final String TAG = "Image Upload";
     private static final int SELECT_IMAGE = 100;

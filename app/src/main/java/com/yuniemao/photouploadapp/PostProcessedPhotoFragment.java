@@ -6,32 +6,33 @@ import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by yuniemao on 12/7/17.
  */
 
-public class PostProcessedPhotoFragment extends PhotoFragmentPublic {
+public class PostProcessedPhotoFragment extends TabsFragment {
 
     private static final String TAG = "ProcessedPhoto Fragment";
     private static final String PHOTO_FRAGMENT_TAB = "Photo Fragment";
     private String tab;
+    private View rootView;
     private DatabaseReference mDatabase;
     private RecyclerView recyclerView;
     private MenuView.ItemView item;
     private String storageUrl;
-    private StorageReference ref;
+    private StorageReference mStorage;
 
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
@@ -51,10 +52,21 @@ public class PostProcessedPhotoFragment extends PhotoFragmentPublic {
 
 
     @Override
+    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        rootView = inflater.inflate(R.layout.fragment_photo_gallery, container, false);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mStorage = FirebaseStorage.getInstance().getReference();
+
+        recyclerView = rootView.findViewById(R.id.image_gallery);
+        //recyclerView.setHasFixedSize(true);
+        return rootView;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ref = FirebaseStorage.getInstance().getReference();
         LinearLayoutManager mManager = new LinearLayoutManager(getActivity());
 
         final Query imageQuery = getQuery(mDatabase);
@@ -69,14 +81,15 @@ public class PostProcessedPhotoFragment extends PhotoFragmentPublic {
 
                 @Override
                 protected void populateViewHolder(final ImageViewHolder viewHolder, final Image image, final int position) {
-                    Log.d(TAG, "query is " + query);
-                    if (query == null || image.getDescription().equals(query)) {
-                        String name = "ascii-"+image.getFileName();
+                    Log.d(TAG, "in populate view");
+                    if (searchString == null || image.getDescription().equals(searchString)) {
+                        String name = "ascii-" + image.getFileName();
 
                         Log.d(TAG, "ascii file name " + name);
-                        ref = ref.child(name);
+                        mStorage = mStorage.child(name);
+                        Log.d(TAG, "storage ref " + mStorage.toString());
 
-                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                        mStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
                         {
                             @Override
                             public void onSuccess(Uri downloadUrl)

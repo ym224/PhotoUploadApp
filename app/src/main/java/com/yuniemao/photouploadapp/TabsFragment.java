@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.storage.StorageReference;
 
 public class TabsFragment extends Fragment {
 
@@ -27,23 +26,16 @@ public class TabsFragment extends Fragment {
     private RecyclerView recyclerView;
     private LinearLayoutManager mManager;
     private boolean isPrivate;
-    public String query;
+    public String searchString;
     private ImageView imageView;
 
     public TabsFragment(){}
     
     public Query getQuery(DatabaseReference databaseReference) {
+        Query query;
         Log.d(TAG, "id " + this.getId());
-        return null;
-//        Query query;
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        if (user != null) {
-//            query = databaseReference.child("private").child(user.getUid()).limitToFirst(50);
-//        }
-//        else {
-//            query = databaseReference.child("public").limitToFirst(50);
-//        }
-//        return query;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        return databaseReference.child("public").limitToFirst(50);
     }
 
     @Override
@@ -75,8 +67,8 @@ public class TabsFragment extends Fragment {
 
                 @Override
                 protected void populateViewHolder(final ImageViewHolder viewHolder, final Image image, final int position) {
-                    Log.d(TAG, "query is " + query);
-                    if (query == null || image.getDescription().equals(query)) {
+                    Log.d(TAG, "searchString is " + searchString);
+                    if (searchString == null || image.getDescription().equals(searchString)) {
                         viewHolder.updateView(image);
                     } else {
                         viewHolder.itemView.setVisibility(View.GONE);
@@ -88,8 +80,8 @@ public class TabsFragment extends Fragment {
         }
     }
 
-    public void setQuery(String query) {
-        this.query = query;
+    public void setSearchString(String searchString) {
+        this.searchString = searchString;
     }
 
 }

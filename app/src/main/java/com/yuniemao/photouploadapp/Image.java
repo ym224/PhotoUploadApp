@@ -40,6 +40,8 @@ public class Image {
         return filePath;
     }
 
+
+    // file path in firebase storage, used to display image
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
