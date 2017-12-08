@@ -40,6 +40,7 @@ public class ImageUploadActivity extends BaseActivity implements View.OnClickLis
     private String authorId;
     private String description;
     private boolean isPrivate;
+    private String fileName;
 
     private static final String TAG = "Image Upload";
     private static final int SELECT_IMAGE = 100;
@@ -89,11 +90,12 @@ public class ImageUploadActivity extends BaseActivity implements View.OnClickLis
                         downloadUrl = taskSnapshot.getDownloadUrl().toString();
 
                         Log.d(TAG, "download url is " + downloadUrl);
-                        Image image = new Image(authorId, description, downloadUrl);
+                        Image image = new Image(authorId, description, filePath.getLastPathSegment(), downloadUrl);
                         Map<String, Object> map = new HashMap<>();
                         map.put("authorId", image.getAuthorId());
                         map.put("description", image.getDescription());
                         map.put("filePath", image.getFilePath());
+                        map.put("fileName", image.getFileName());
 
                         if (isPrivate) {
                             databaseRef.child("private").child(authorId).push().setValue(map);

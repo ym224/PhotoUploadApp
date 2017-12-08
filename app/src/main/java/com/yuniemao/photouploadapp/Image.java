@@ -9,12 +9,14 @@ public class Image {
     private String authorId;
     private String description;
     private String filePath;
+    private String fileName;
 
     public Image(){}
 
-    public Image(String authorId, String description, String filePath) {
+    public Image(String authorId, String description, String fileName, String filePath) {
         this.authorId = authorId;
         this.description = description;
+        this.fileName = fileName;
         this.filePath = filePath;
     }
 
@@ -40,5 +42,13 @@ public class Image {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

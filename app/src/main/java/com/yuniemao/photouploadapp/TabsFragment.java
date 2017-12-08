@@ -16,10 +16,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.storage.StorageReference;
 
 public class TabsFragment extends Fragment {
 
-    private static final String TAG = "Tabs";
+    private static final String TAG = "Tabs Fragment";
     private DatabaseReference mDatabase;
     FirebaseRecyclerAdapter<Image, ImageViewHolder> mAdapter;
     private View rootView;
@@ -30,17 +31,19 @@ public class TabsFragment extends Fragment {
     private ImageView imageView;
 
     public TabsFragment(){}
-
+    
     public Query getQuery(DatabaseReference databaseReference) {
-        Query query;
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            query = databaseReference.child("private").child(user.getUid()).limitToFirst(50);
-        }
-        else {
-            query = databaseReference.child("public").limitToFirst(50);
-        }
-        return query;
+        Log.d(TAG, "id " + this.getId());
+        return null;
+//        Query query;
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        if (user != null) {
+//            query = databaseReference.child("private").child(user.getUid()).limitToFirst(50);
+//        }
+//        else {
+//            query = databaseReference.child("public").limitToFirst(50);
+//        }
+//        return query;
     }
 
     @Override

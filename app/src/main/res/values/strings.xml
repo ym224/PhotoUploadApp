@@ -9,4 +9,5 @@
     <string name="select_image">Select Photo</string>
     <string name="pub">Public</string>
     <string name="pri">Private</string>
+    <string name="show_all">Show All Photos</string>
 </resources>

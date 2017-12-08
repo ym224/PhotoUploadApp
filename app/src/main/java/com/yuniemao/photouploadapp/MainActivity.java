@@ -1,8 +1,8 @@
 package com.yuniemao.photouploadapp;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -36,8 +36,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        final TabsFragment photoFragment = new TabsFragment();
-        final TabsFragment processedPhotoFragment = new TabsFragment();
+        final TabsFragment photoFragment = new PhotoFragmentPublic();
+        final TabsFragment photoFragmentPrivate = new PhotoFragmentPrivate();
+        final TabsFragment processedPhotoFragment = new PostProcessedPhotoFragment();
+
+
+        if (user != null) {
+            viewPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+
+                private final Fragment[] mFragments = new Fragment[]{photoFragment, photoFragmentPrivate, processedPhotoFragment};
+                private final String[] mFragmentNames = {"PUBLIC", "PRIVATE", "ASCII"};
+
+                @Override
+                public Fragment getItem(int position) {
+                    return mFragments[position];
+                }
+
+                @Override
+                public int getCount() {
+                    return mFragments.length;
+                }
+
+                @Override
+                public CharSequence getPageTitle(int position) {
+                    return mFragmentNames[position];
+                }
+            };
+        }
+        else {
+            viewPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+
+                private final Fragment[] mFragments = new Fragment[]{photoFragment, processedPhotoFragment};
+                private final String[] mFragmentNames = {"PUBLIC", "ASCII"};
+
+                @Override
+                public Fragment getItem(int position) {
+                    return mFragments[position];
+                }
+
+                @Override
+                public int getCount() {
+                    return mFragments.length;
+                }
+
+                @Override
+                public CharSequence getPageTitle(int position) {
+                    return mFragmentNames[position];
+                }
+            };
+        }
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -45,29 +92,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "search string is " + searchString);
             photoFragment.setQuery(searchString);
             processedPhotoFragment.setQuery(searchString);
+            // show all button
+            findViewById(R.id.show_all).setVisibility(View.VISIBLE);
+            findViewById(R.id.show_all).setOnClickListener(this);
         }
-
-        viewPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()){
-            private final Fragment[] mFragments = new Fragment[] {photoFragment, processedPhotoFragment};
-            private final String[] mFragmentNames = {"PHOTOS", "ASCII PHOTOS"};
-            @Override
-            public Fragment getItem(int position) {
-                return mFragments[position];
-            }
-            @Override
-            public int getCount() {
-                return mFragments.length;
-            }
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mFragmentNames[position];
-            }
-        };
 
         viewPager = findViewById(R.id.container);
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
         findViewById(R.id.new_photo_button).setOnClickListener(this);
         searchBar = findViewById(R.id.search_bar);
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -148,6 +182,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
             }
+        }
+        if (id == R.id.show_all) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
     }
 }

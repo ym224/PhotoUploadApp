@@ -40,6 +40,13 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
         Picasso.with(itemView.getContext())
                 .load(image.getFilePath())
                 .into(imageView);
+    }
+
+    public void updateView(String downloadUrl) {
+        Picasso.with(itemView.getContext())
+                .load(downloadUrl)
+                .into(imageView);
 
     }
+
 }
