@@ -87,11 +87,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+            // get search string from previous intent view
             searchString = bundle.getString("searchString");
             Log.d(TAG, "search string is " + searchString);
             photoFragment.setSearchString(searchString);
+            photoFragmentPrivate.setSearchString(searchString);
             processedPhotoFragment.setSearchString(searchString);
-            // show all button
+            // show all button if in filtered view
             findViewById(R.id.show_all).setVisibility(View.VISIBLE);
             findViewById(R.id.show_all).setOnClickListener(this);
         }
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(final String query) {
+                // pass search string to intent before restarting activity
                 showSearchImages(query);
                 return true;
             }
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "in show search with searchString " + query);
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("searchString", query); // pass search searchString to intent
+        bundle.putString("searchString", query); // pass search string to intent
         intent.putExtras(bundle);
         startActivity(intent);
         finish();

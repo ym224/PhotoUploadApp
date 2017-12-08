@@ -30,7 +30,6 @@ public class PostProcessedPhotoFragment extends TabsFragment {
     private View rootView;
     private DatabaseReference mDatabase;
     private RecyclerView recyclerView;
-    private MenuView.ItemView item;
     private String storageUrl;
     private StorageReference mStorage;
 

@@ -34,6 +34,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
         imageView = itemView.findViewById(R.id.image_view);
     }
 
+    // load image and description into view for public and private tabs
     public void updateView(Image image) {
         desc.setText(image.getDescription());
 
@@ -42,6 +43,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
                 .into(imageView);
     }
 
+    // load image into view for ascii tab
     public void updateView(String downloadUrl) {
         Picasso.with(itemView.getContext())
                 .load(downloadUrl)

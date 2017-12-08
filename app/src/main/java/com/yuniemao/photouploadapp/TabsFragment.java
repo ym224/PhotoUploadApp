@@ -25,14 +25,11 @@ public class TabsFragment extends Fragment {
     private View rootView;
     private RecyclerView recyclerView;
     private LinearLayoutManager mManager;
-    private boolean isPrivate;
     public String searchString;
-    private ImageView imageView;
 
     public TabsFragment(){}
     
     public Query getQuery(DatabaseReference databaseReference) {
-        Query query;
         Log.d(TAG, "id " + this.getId());
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         return databaseReference.child("public").limitToFirst(50);
@@ -55,6 +52,8 @@ public class TabsFragment extends Fragment {
         mManager = new LinearLayoutManager(getActivity());
         //mManager.setReverseLayout(true);
         //mManager.setStackFromEnd(true);
+
+        // list all public or private images depending on permissions
         final Query imageQuery = getQuery(mDatabase);
         if (imageQuery == null) {
             Log.d(TAG, "no image results");
