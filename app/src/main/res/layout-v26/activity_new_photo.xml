@@ -8,21 +8,24 @@ tools:context=".ImageUploadActivity">
 
     <EditText
         android:id="@+id/description"
-        android:layout_width="172dp"
-        android:layout_height="111dp"
-        android:layout_marginRight="196dp"
-        android:hint="Description"
+        android:layout_width="200dp"
+        android:layout_height="124dp"
+        android:layout_marginRight="192dp"
+        android:layout_marginTop="4dp"
+        android:hint="@string/description"
         android:maxLines="5"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <Button
         android:id="@+id/select_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="188dp"
-        android:layout_marginTop="216dp"
-        android:text="@string/action_new"
+        android:layout_width="193dp"
+        android:layout_height="51dp"
+        android:layout_marginRight="200dp"
+        android:layout_marginTop="220dp"
+        android:text="Upload From Gallary"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_constraintRight_creator="1"
@@ -30,18 +33,17 @@ tools:context=".ImageUploadActivity">
 
     <Switch
         android:id="@+id/permission_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="148dp"
         android:checked="true"
         android:showText="true"
         android:textOff="public"
         android:textOn="private"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="140dp"
-        tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp" />
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
 </android.support.constraint.ConstraintLayout>
