@@ -39,7 +39,7 @@
         android:layout_alignBottom="@id/container"
         android:layout_alignRight="@id/container"
         android:layout_margin="10dp"
-        app:backgroundTint="@android:color/holo_green_light"
+        app:backgroundTint="@android:color/holo_blue_light"
         app:srcCompat="@mipmap/ic_action_camera" />
 
 </RelativeLayout>

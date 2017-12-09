@@ -79,7 +79,12 @@ public class ImageUploadActivity extends BaseActivity implements View.OnClickLis
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            storageRef = storageRef.child(filePath.getLastPathSegment());
+            if (isPrivate) {
+                storageRef = storageRef.child("private").child(authorId).child(filePath.getLastPathSegment());
+            }
+            else {
+                storageRef = storageRef.child("public").child(filePath.getLastPathSegment());
+            }
 
             storageRef.putFile(filePath)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -89,11 +94,14 @@ public class ImageUploadActivity extends BaseActivity implements View.OnClickLis
                         downloadUrl = taskSnapshot.getDownloadUrl().toString();
 
                         Log.d(TAG, "download url is " + downloadUrl);
-                        Image image = new Image(authorId, description, filePath.getLastPathSegment(), downloadUrl);
+
+                        Image image = new Image(authorId, description, filePath.getLastPathSegment(), storageRef.toString(), downloadUrl);
+
                         Map<String, Object> map = new HashMap<>();
                         map.put("authorId", image.getAuthorId());
                         map.put("description", image.getDescription());
                         map.put("filePath", image.getFilePath());
+                        map.put("fileRef", image.getFileRef());
                         map.put("fileName", image.getFileName());
 
                         if (isPrivate) {

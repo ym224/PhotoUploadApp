@@ -30,7 +30,6 @@ public class PostProcessedPhotoFragment extends TabsFragment {
     private View rootView;
     private DatabaseReference mDatabase;
     private RecyclerView recyclerView;
-    private String storageUrl;
     private StorageReference mStorage;
 
     @Override
@@ -82,23 +81,20 @@ public class PostProcessedPhotoFragment extends TabsFragment {
                 protected void populateViewHolder(final ImageViewHolder viewHolder, final Image image, final int position) {
                     Log.d(TAG, "in populate view");
                     if (searchString == null || image.getDescription().equals(searchString)) {
-                        String name = "ascii-" + image.getFileName();
+                        if (image.getFileRef() != null) {
 
-                        Log.d(TAG, "ascii file name " + name);
-                        mStorage = mStorage.child(name);
-                        Log.d(TAG, "storage ref " + mStorage.toString());
+                            mStorage = getStorageRefFromString(image.getFileRef());
+                            Log.d(TAG, "final storage ref: " + mStorage.toString());
 
-                        mStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
-                        {
-                            @Override
-                            public void onSuccess(Uri downloadUrl)
-                            {
-                                storageUrl = downloadUrl.toString();
-                                Log.d(TAG, "storage download url is " + storageUrl);
+                            mStorage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri downloadUrl) {
+                                    Log.d(TAG, "storage download url: " + downloadUrl.toString());
 
-                                viewHolder.updateView(storageUrl);
-                            }
-                        });
+                                    viewHolder.updateView(downloadUrl.toString());
+                                }
+                            });
+                        }
 
                     } else {
                         viewHolder.itemView.setVisibility(View.GONE);
@@ -108,6 +104,33 @@ public class PostProcessedPhotoFragment extends TabsFragment {
             recyclerView.setLayoutManager(mManager);
             recyclerView.setAdapter(mAdapter);
         }
+    }
+
+    public StorageReference getStorageRefFromString(String fileRef) {
+        String[] filePaths = fileRef.split("/");
+
+        String asciiFileName = "";
+        boolean isPrivate = false;
+        if (filePaths.length == 6) {
+            asciiFileName = "ascii-" + filePaths[5];
+            isPrivate = true;
+        }
+        else if (filePaths.length == 5) {
+            asciiFileName = "ascii-" + filePaths[4];
+        }
+        else {
+            Log.e(TAG, "error in file storage ref path");
+        }
+
+        Log.d(TAG, "ascii file name: " + asciiFileName);
+
+        if (isPrivate) {
+            mStorage = mStorage.child("private").child(filePaths[4]).child(asciiFileName);
+        }
+        else {
+            mStorage = mStorage.child("public").child(asciiFileName);
+        }
+        return mStorage;
     }
 
 
