@@ -1,7 +1,7 @@
 README
 
 
-Photo Sharing App that allows users to upload and share photos. 
+A simple photo sharing app that allows users to upload and share photos. 
 It integrates with a photo processing service that converts images to ASCII images.
 
 
